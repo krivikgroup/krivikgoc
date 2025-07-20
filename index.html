@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krivik Tissue Exports</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: none;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar-desktop {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #111;
+            padding: 20px 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 80px;
+        }
+
+        .logo-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            width: 150px;
+            position: absolute;
+            bottom: -80px;
+            z-index: 1001;
+            background-color: #fff;
+            border-radius: 50%;
+            padding: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: stamp 1s ease-out forwards;
+        }
+
+        @keyframes stamp {
+            0% { transform: translateY(-100px) scale(0.5) rotate(0deg); opacity: 0; }
+            60% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+            80% { transform: scale(0.95) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff4d4d;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ff4d4d;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Navbar */
+        .navbar-mobile {
+            display: none;
+            background-color: #111;
+            padding: 10px 20px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 80px;
+        }
+
+        .navbar-mobile .logo-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+        }
+
+        .navbar-mobile .logo {
+            width: 120px;
+            position: absolute;
+            bottom: -65px;
+            z-index: 1001;
+            background-color: #fff;
+            border-radius: 50%;
+            padding: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: stamp 1s ease-out forwards;
+        }
+
+        .hamburger {
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Sidebar Navbar */
+        .sidebar {
+            position: fixed;
+            top: -100%;
+            right: 0;
+            width: 70%;
+            height: 100vh;
+            background-color: #111;
+            display: flex;
+            flex-direction: column;
+            transition: top 0.5s ease;
+            z-index: 1001;
+        }
+
+        .sidebar.active {
+            top: 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1003;
+        }
+
+        .menu-links {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .menu-links .logo {
+            width: 156px;
+            position: static;
+            bottom: auto;
+            box-shadow: none;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: stamp 1s ease-out 0.2s forwards;
+            z-index: 1002;
+        }
+
+        .menu-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .menu-links a:hover {
+            color: #ff4d4d;
+        }
+
+        /* Overlay for closing sidebar */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Hero Section with Custom Slider Effects */
+        .hero-wrapper {
+            position: relative;
+            height: 100vh;
+            margin-top: 160px;
+            background: url('white-bg.png') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slider-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.8s ease;
+            opacity: 0;
+            clip-path: polygon(
+                0 0, 100% 0, 100% 85%, 95% 90%, 90% 87%, 85% 92%, 
+                75% 88%, 65% 93%, 55% 89%, 45% 94%, 35% 90%, 25% 95%, 
+                15% 91%, 10% 96%, 5% 92%, 0 97%
+            );
+            z-index: 1;
+        }
+
+        .slider-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+            z-index: 2;
+        }
+
+        .slider-item.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .slider-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            z-index: 3;
+            padding: 0 50px;
+        }
+
+        .slide-1 .slider-content {
+            justify-content: flex-end;
+        }
+
+        .slide-2 .slider-content {
+            justify-content: flex-start;
+        }
+
+        .slide-3 .slider-content {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slider-text {
+            opacity: 0;
+        }
+
+        .slide-1.active .slider-text {
+            animation: slideFromTop 1s ease-out forwards, fadeOut 1s ease-out 2.5s forwards;
+        }
+
+        .slide-2.active .slider-text {
+            animation: fadeIn 1s ease-out forwards, fadeOut 1s ease-out 2.5s forwards;
+        }
+
+        .slide-3.active .slider-text {
+            animation: fadeIn 1s ease-out forwards, fadeOut 1s ease-out 2.5s forwards;
+        }
+
+        @keyframes slideFromTop {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .slider-item h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 72px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin: 0;
+        }
+
+        .slider-item p {
+            font-size: 24px;
+            margin: 10px 0 0;
+        }
+
+        .slider-item a {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #ff4d4d;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .slider-item a:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        /* Floating Capsule Navigation */
+        .slider-capsules {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 3;
+        }
+
+        .capsule {
+            width: 40px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .capsule:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .capsule.active {
+            background-color: #fff;
+            animation: pulseGlow 3.5s linear infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 255, 255, 1); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+        }
+
+        /* Tissue Wave Gallery About Section */
+        .about {
+            position: relative;
+            padding: 40px 40px 80px;
+            background: linear-gradient(to bottom, #fff 0%, #eee 30%, #111 100%);
+            text-align: center;
+            min-height: 450px;
+            animation: sectionSlide 1s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes sectionSlide {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .cascade-edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #fff;
+            clip-path: polygon(
+                0 0, 100% 0, 100% 80%, 95% 85%, 90% 82%, 85% 87%, 
+                75% 83%, 65% 88%, 55% 84%, 45% 89%, 35% 85%, 25% 90%, 
+                15% 86%, 10% 91%, 5% 87%, 0 92%
+            );
+            animation: edgeStretch 1s ease-out;
+        }
+
+        @keyframes edgeStretch {
+            0% { transform: scaleY(0.8); }
+            100% { transform: scaleY(1); }
+        }
+
+        .cascade-header {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            padding: 8px 15px;
+            clip-path: polygon(
+                0 0, 100% 0, 100% 80%, 95% 85%, 90% 82%, 85% 87%, 
+                75% 83%, 65% 88%, 55% 84%, 45% 89%, 35% 85%, 25% 90%, 
+                15% 86%, 10% 91%, 5% 87%, 0 92%
+            );
+            animation: tearReveal 1s ease-out;
+        }
+
+        @keyframes tearReveal {
+            0% { opacity: 0; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+            100% { opacity: 1; clip-path: polygon(
+                0 0, 100% 0, 100% 80%, 95% 85%, 90% 82%, 85% 87%, 
+                75% 83%, 65% 88%, 55% 84%, 45% 89%, 35% 85%, 25% 90%, 
+                15% 86%, 10% 91%, 5% 87%, 0 92%
+            ); }
+        }
+
+        .cascade-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 38px;
+            color: #111;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .cascade-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #ff4d4d;
+        }
+
+        .cascade-header p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+        }
+
+        .cascade-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 320px;
+        }
+
+        .cascade-item {
+            position: absolute;
+            width: 200px;
+            text-align: center;
+            opacity: 0.9;
+            animation: tissuePulse 6s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+
+        .cascade-item.item-1 { top: 60px; left: 20px; animation-delay: 0s; }
+        .cascade-item.item-2 { top: 100px; right: 20px; animation-delay: 0.5s; }
+        .cascade-item.item-3 { bottom: 80px; left: 300px; animation-delay: 1s; }
+        .cascade-item.item-4 { top: 180px; left: 50%; transform: translateX(-50%); animation-delay: 1.5s; }
+        .cascade-item.item-5 { bottom: 80px; right: 300px; animation-delay: 2s; }
+
+        @keyframes tissuePulse {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+            50% { transform: translateY(-8px) scale(1.02); opacity: 0.93; }
+        }
+
+        .cascade-item:hover {
+            animation-play-state: paused;
+            transform: scale(1.1) translateX(-50%) !important;
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+            z-index: 10;
+        }
+
+        .cascade-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .cascade-item:hover img {
+            border-color: #ff4d4d;
+        }
+
+        .cascade-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 77, 77, 0);
+            transition: background 0.3s ease;
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .cascade-item:hover::before {
+            background: rgba(255, 77, 77, 0.4);
+        }
+
+        .cascade-text {
+            position: absolute;
+            bottom: -60px;
+            left: -10px;
+            right: -10px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            background: rgba(17, 17, 17, 0.8);
+            padding: 8px 6px;
+            border-radius: 0 0 8px 8px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: textSlide 0.7s ease-out forwards;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 2;
+            line-height: 1.2;
+        }
+
+        .cascade-item.item-1 .cascade-text { animation-delay: 0.15s; }
+        .cascade-item.item-2 .cascade-text { animation-delay: 0.3s; }
+        .cascade-item.item-3 .cascade-text { animation-delay: 0.45s; }
+        .cascade-item.item-4 .cascade-text { animation-delay: 0.6s; }
+        .cascade-item.item-5 .cascade-text { animation-delay: 0.75s; }
+
+        @keyframes textSlide {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .cascade-item:hover .cascade-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .cascade-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #ff4d4d;
+            transition: width 0.3s ease;
+        }
+
+        .cascade-item:hover .cascade-text::after {
+            width: 70%;
+        }
+
+        .about-btn {
+            display: block;
+            width: 120px;
+            height: 120px;
+            background-color: #ff4d4d;
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            margin: 40px auto;
+            animation: btnPulse 2s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            line-height: 1.2;
+            padding: 10px;
+        }
+
+        @keyframes btnPulse {
+            0% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 77, 77, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 77, 77, 0.3); }
+        }
+
+        .about-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #e60000;
+            transition: left 0.3s ease;
+            z-index: 0;
+        }
+
+        .about-btn:hover::before {
+            left: 0;
+        }
+
+        .about-btn:hover {
+            transform: scale(1.1);
+            animation-play-state: paused;
+        }
+
+        .about-btn span {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 100px 40px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .products h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 40px;
+            color: #111;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .products h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background-color: #ff4d4d;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.2s; }
+        .product-card:nth-child(2) { animation-delay: 0.4s; }
+        .product-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            color: #111;
+            margin: 20px 0 10px;
+        }
+
+        .product-card p {
+            font-size: 16px;
+            color: #666;
+            padding: 0 20px 20px;
+        }
+
+        .product-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 25px;
+            margin: 0 20px 20px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .product-btn:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 40px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .testimonials h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 40px;
+            color: #111;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .testimonials h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background-color: #ff4d4d;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-card p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-card h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            color: #111;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 40px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 40px;
+            color: #111;
+            margin-bottom: 50px;
+        }
+
+        .contact form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact input, .contact textarea {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .contact button {
+            padding: 15px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact button:hover {
+            background-color: #e60000;
+        }
+
+        /* Updated Footer */
+        .footer {
+            padding: 50px 40px;
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .footer-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ff4d4d;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin: 10px 0;
+        }
+
+        .footer-section ul li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ff4d4d;
+        }
+
+        .footer-section .footer-logo {
+            width: 100px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .footer-section p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 1200px) {
+            .navbar-desktop { display: none; }
+            .navbar-mobile { display: flex; }
+            .hero-wrapper { margin-top: 0; }
+            .slider-item h1 { font-size: 48px; }
+            .slider-item p { font-size: 18px; }
+            .products h2, .testimonials h2, .contact h2 { font-size: 30px; }
+            .navbar-mobile .logo { left: 20px; transform: none; }
+            .slider-content { padding: 0 20px; }
+            .slider-capsules { bottom: 15%; }
+            .capsule { width: 30px; height: 15px; }
+            .cascade-header h2 { font-size: 32px; }
+            .cascade-header p { font-size: 15px; }
+            .cascade-gallery { max-width: 100%; height: 300px; }
+            .cascade-item { width: 160px; }
+            .cascade-item img { height: 160px; }
+            .cascade-text { font-size: 11px; bottom: -50px; padding: 6px 4px; left: -8px; right: -8px; }
+            .cascade-item.item-1 { left: 20px; top: 50px; }
+            .cascade-item.item-2 { right: 20px; top: 90px; }
+            .cascade-item.item-3 { left: 200px; bottom: 70px; }
+            .cascade-item.item-4 { left: 50%; top: 160px; }
+            .cascade-item.item-5 { right: 200px; bottom: 70px; }
+            .cascade-item:hover { transform: scale(1.1) !important; }
+            .about-btn { width: 100px; height: 100px; font-size: 14px; margin: 30px auto; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1200px) {
+            .sidebar { width: 50%; }
+            .sidebar .logo { width: 200px; }
+            .navbar-mobile .logo { width: 150px; left: 50%; transform: translateX(-50%); bottom: -80px; top: auto; }
+            .navbar-mobile, .navbar-mobile .logo-container { overflow: visible; }
+        }
+
+        @media (max-width: 767px) {
+            .navbar-mobile .logo { width: 120px; left: 20px; transform: none; bottom: -65px; }
+            .hero-wrapper { margin-top: 0; }
+            .slider-item h1 { font-size: 36px; }
+            .slider-item p { font-size: 16px; }
+            .products, .testimonials, .about, .contact { padding: 60px 20px; }
+            .slider-item a { padding: 12px 30px; }
+            .capsule { width: 25px; height: 12px; }
+            .about { min-height: auto; padding: 30px 20px 50px; }
+            .cascade-edge { height: 40px; }
+            .cascade-header { margin-bottom: 15px; padding: 6px 10px; }
+            .cascade-header h2 { font-size: 28px; }
+            .cascade-header p { font-size: 14px; }
+            .cascade-gallery { 
+                height: auto; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            .cascade-item { 
+                position: static; 
+                width: 180px; 
+                margin: 15px 0; 
+                animation: none; 
+                transform: none !important; 
+            }
+            .cascade-item img { height: 180px; }
+            .cascade-text { 
+                position: relative; 
+                bottom: 0; 
+                margin-top: 8px; 
+                font-size: 13px; 
+                opacity: 1; 
+                transform: none; 
+                animation: none; 
+                background: none; 
+                color: #111; 
+                padding: 0; 
+                left: 0; 
+                right: 0; 
+                line-height: 1.4; 
+            }
+            .cascade-item:hover { 
+                transform: none !important; 
+                box-shadow: none; 
+            }
+            .cascade-item:hover img { 
+                border-color: #fff; 
+            }
+            .cascade-item:hover::before { 
+                background: none; 
+            }
+            .cascade-item:hover .cascade-text::after { 
+                width: 0; 
+            }
+            .about-btn { width: 90px; height: 90px; font-size: 13px; margin: 20px auto; }
+        }
+
+        @media (max-width: 400px) {
+            .navbar-mobile .logo { width: 100px; left: 15px; bottom: -55px; }
+            .hero-wrapper { margin-top: 0; }
+            .slider-item h1 { font-size: 28px; }
+            .slider-item p { font-size: 14px; }
+            .slider-item a { padding: 10px 25px; font-size: 16px; }
+            .capsule { width: 20px; height: 10px; }
+            .cascade-header h2 { font-size: 24px; }
+            .cascade-header p { font-size: 13px; }
+            .cascade-item { width: 150px; }
+            .cascade-item img { height: 150px; }
+            .cascade-text { font-size: 12px; }
+            .about-btn { width: 80px; height: 80px; font-size: 12px; }
+        }
+
+        @media (min-width: 1201px) {
+            .navbar-desktop .logo { width: 127px; bottom: -68px; }
+            .hero-wrapper { margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navbar -->
+    <nav class="navbar-desktop">
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+        </div>
+        <div class="logo-container">
+            <img src="your-logo.png" alt="Krivik Logo" class="logo">
+        </div>
+        <div class="nav-links">
+            <a href="#products">Products</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Mobile Navbar -->
+    <nav class="navbar-mobile">
+        <div class="logo-container">
+            <img src="your-logo.png" alt="Krivik Logo" class="logo">
+        </div>
+        <span class="hamburger" onclick="toggleSidebar()">☰</span>
+    </nav>
+
+    <!-- Sidebar Navbar -->
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">✕</span>
+        <div class="menu-links">
+            <img src="your-logo.png" alt="Krivik Logo" class="logo">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#contact">Contact</a>
+            <a href="#extra1">Extra Link 1</a>
+            <a href="#extra2">Extra Link 2</a>
+            <a href="#extra3">Extra Link 3</a>
+            <a href="#extra4">Extra Link 4</a>
+        </div>
+    </div>
+
+    <!-- Overlay for closing sidebar -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Hero Section with Custom Slider Effects -->
+    <div class="hero-wrapper" id="home">
+        <div class="slider-container">
+            <div class="slider-item slide-1" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c');" data-tilt>
+                <div class="slider-content">
+                    <div class="slider-text">
+                        <h1>Premium Tissues</h1>
+                        <p>Softness You Can Feel</p>
+                        <a href="#products">Discover Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-item slide-2" style="background-image: url('https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1');" data-tilt>
+                <div class="slider-content">
+                    <div class="slider-text">
+                        <h1>Eco-Friendly</h1>
+                        <p>Sustainable Living</p>
+                        <a href="#about">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-capsules">
+                <div class="capsule active" onclick="changeSlide(0)"></div>
+                <div class="capsule" onclick="changeSlide(1)"></div>
+                <div class="capsule" onclick="changeSlide(2)"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tissue Wave Gallery About Section -->
+    <section class="about" id="about">
+        <div class="cascade-edge"></div>
+        <div class="cascade-header">
+            <h2>Why Choose Us</h2>
+            <p>Premium tissue solutions delivered with trust and excellence.</p>
+        </div>
+        <div class="cascade-gallery">
+            <div class="cascade-item item-1">
+                <img src="https://images.unsplash.com/photo-1598965650005-37b9d47c1a12" alt="Delivery Truck">
+                <span class="cascade-text">Timely and Efficient Delivery</span>
+            </div>
+            <div class="cascade-item item-2">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Facial Tissue">
+                <span class="cascade-text">Superior Quality Assurance</span>
+            </div>
+            <div class="cascade-item item-3">
+                <img src="https://images.unsplash.com/photo-1577705998148-6d056496b820" alt="Customer Support">
+                <span class="cascade-text">Great After-Sales Service</span>
+            </div>
+            <div class="cascade-item item-4">
+                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6" alt="Tissue Stack">
+                <span class="cascade-text">Premium Quality at Affordable Prices</span>
+            </div>
+        </div>
+        <a href="#about-page" class="about-btn"><span>Learn More</span></a>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <h2>Products we Offer</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Facial Tissue">
+                <h3>Facial Tissue</h3>
+                <p>Soft, durable, and perfect for everyday use. Available in various pack sizes.</p>
+                <a href="#facial-tissue" class="product-btn">Learn More</a>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Toilet Tissue">
+                <h3>Toilet Tissue</h3>
+                <p>High-quality, eco-friendly toilet tissue for maximum comfort.</p>
+                <a href="#toilet-tissue" class="product-btn">Learn More</a>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Napkin Tissue">
+                <h3>Napkin Tissue</h3>
+                <p>Stylish and absorbent napkins for dining and events.</p>
+                <a href="#napkin-tissue" class="product-btn">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>"Krivik Tissue Exports provided us with the highest quality tissue papers for our global markets. Their service is exceptional!"</p>
+                <h4>John Doe, Global Retailer</h4>
+            </div>
+            <div class="testimonial-card">
+                <p>"We’ve been partnering with Krivik for years, and their products never disappoint. Highly recommend!"</p>
+                <h4>Jane Smith, Distributor</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Get in Touch</h2>
+        <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Updated Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Our Brand</h3>
+            <img src="your-logo.png" alt="Krivik Logo" class="footer-logo">
+        </div>
+        <div class="footer-section">
+            <h3>Contact Details</h3>
+            <p>Email: info@krivikgroup.com</p>
+            <p>Phone: +1 123-456-7890</p>
+            <p>Address: 123 Tissue Lane, Export City</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            if (sidebar.classList.contains("active")) {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("active");
+                sidebar.style.top = "-100%";
+                document.body.style.overflow = "auto";
+            } else {
+                sidebar.classList.add("active");
+                overlay.classList.add("active");
+                sidebar.style.top = "0";
+                document.body.style.overflow = "hidden";
+            }
+        }
+
+        // Slider Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slider-item');
+        const capsules = document.querySelectorAll('.capsule');
+        const slideDuration = 3500; // 3.5 seconds
+        let slideInterval;
+
+        function changeSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            capsules[currentSlide].classList.remove('active');
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            capsules[currentSlide].classList.add('active');
+            resetSlideInterval();
+        }
+
+        function resetSlideInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                let nextSlide = (currentSlide + 1) % slides.length;
+                changeSlide(nextSlide);
+            }, slideDuration);
+        }
+
+        // Initialize first slide
+        changeSlide(0);
+
+        // Add click events to capsules
+        capsules.forEach((capsule, index) => {
+            capsule.addEventListener('click', () => {
+                changeSlide(index);
+            });
+        });
+
+        // Tilt.js Initialization
+        $(document).ready(function() {
+            $('.slider-item').tilt({
+                maxTilt: 10,
+                scale: 1.05,
+                speed: 400,
+                glare: true,
+                maxGlare: 0.2
+            });
+        });
+
+        // Ensure sidebar is hidden on resize/rotation
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            if (!sidebar.classList.contains("active")) {
+                sidebar.style.top = "-100%";
+                overlay.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        });
+
+        // Ensure sidebar is hidden on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            sidebar.style.top = "-100%";
+            overlay.classList.remove("active");
+            document.body.style.overflow = "auto";
+        });
+    </script>
+</body>
+</html>
