@@ -649,9 +649,11 @@
 
         /* Products Section */
         .products {
-            padding: 100px 40px;
+            padding: 100px 0;
             background-color: #fff;
             text-align: center;
+            width: 100%;
+            margin: 0;
         }
 
         .products h2 {
@@ -677,7 +679,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 100%;
+            padding: 0 40px;
             margin: 0 auto;
         }
 
@@ -742,9 +745,11 @@
 
         /* Testimonials Section */
         .testimonials {
-            padding: 100px 40px;
+            padding: 100px 0;
             background-color: #f9f9f9;
             text-align: center;
+            width: 100%;
+            margin: 0;
         }
 
         .testimonials h2 {
@@ -770,7 +775,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 100%;
+            padding: 0 40px;
             margin: 0 auto;
         }
 
@@ -795,47 +801,349 @@
 
         /* Contact Section */
         .contact {
-            padding: 100px 40px;
+            padding: 100px 0;
             background-color: #f9f9f9;
-            text-align: center;
+            text-align: left;
+            width: 100%;
+            margin: 0;
         }
 
-        .contact h2 {
+        .contact-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .contact-text {
+            padding: 20px;
+        }
+
+        .contact-text h2 {
             font-family: 'Montserrat', sans-serif;
             font-size: 40px;
             color: #111;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
+            position: relative;
+            animation: slideFromLeft 1s ease-out forwards;
         }
 
-        .contact form {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
+        .contact-text h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4d4d;
+            bottom: -10px;
+            left: 0;
+        }
+
+        .contact-text p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .contact-text ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .contact-text ul li {
+            font-size: 16px;
+            color: #333;
+            margin: 10px 0;
+            position: relative;
+            padding-left: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .contact-text ul li:nth-child(1) { animation-delay: 0.4s; }
+        .contact-text ul li:nth-child(2) { animation-delay: 0.5s; }
+        .contact-text ul li:nth-child(3) { animation-delay: 0.6s; }
+
+        .contact-text ul li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #ff4d4d;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .contact-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .contact input, .contact textarea {
+        .contact-form .form-row.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-form .code-phone-group {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 10px;
+        }
+
+        .contact-form input,
+        .contact-form select,
+        .contact-form textarea {
+            width: 100%;
             padding: 15px;
             border: 2px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.3s ease;
         }
 
-        .contact button {
+        .contact-form input:focus,
+        .contact-form select:focus,
+        .contact-form textarea:focus {
+            border-color: #ff4d4d;
+            outline: none;
+        }
+
+        .contact-form select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23111" d="M6 9L2 5h8z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            width: 100%;
             padding: 15px;
             background-color: #ff4d4d;
             color: #fff;
             border: none;
             border-radius: 5px;
             font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .contact button:hover {
+        .contact-form button:hover {
             background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        .contact-form button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #e60000;
+            transition: left 0.3s ease;
+            z-index: 0;
+        }
+
+        .contact-form button:hover::before {
+            left: 0;
+        }
+
+        .contact-form button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* New About Section */
+        .about {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 0;
+        }
+
+        .about-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text {
+            padding: 20px;
+        }
+
+        .about-text h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 40px;
+            color: #111;
+            margin-bottom: 20px;
+            position: relative;
+            animation: slideFromLeft 1s ease-out forwards;
+        }
+
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4d4d;
+            bottom: -10px;
+            left: 0;
+        }
+
+        .about-text p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .about-text ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .about-text ul li {
+            font-size: 16px;
+            color: #333;
+            margin: 10px 0;
+            position: relative;
+            padding-left: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .about-text ul li:nth-child(1) { animation-delay: 0.4s; }
+        .about-text ul li:nth-child(2) { animation-delay: 0.5s; }
+        .about-text ul li:nth-child(3) { animation-delay: 0.6s; }
+
+        .about-text ul li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #ff4d4d;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .about-text a {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #ff4d4d;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            animation: btnPulse 2s ease-in-out infinite;
+        }
+
+        .about-text a:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+            animation-play-state: paused;
+        }
+
+        .about-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 77, 77, 0.3), rgba(0, 0, 0, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .about-image:hover::before {
+            opacity: 1;
+        }
+
+        .about-image-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 2;
+        }
+
+        .about-image:hover .about-image-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes slideFromLeft {
+            0% { opacity: 0; transform: translateX(-50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes btnPulse {
+            0% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 77, 77, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 77, 77, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 77, 77, 0.3); }
         }
 
         /* Updated Footer */
@@ -892,6 +1200,72 @@
             font-size: 16px;
         }
 
+        /* Email Popup Styling */
+        .email-link {
+            color: #ff4d4d;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .email-link:hover {
+            background-color: rgba(255, 77, 77, 0.3);
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        .email-option-btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .email-option-btn:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background-color: #ff4d4d;
+            color: #fff;
+        }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .modal-body p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .btn-secondary {
+            background-color: #666;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+
         /* Media Queries for Responsiveness */
         @media (max-width: 1200px) {
             .navbar-desktop { display: none; }
@@ -900,7 +1274,8 @@
             .slider-item h1 { font-size: 48px; }
             .slider-item p { font-size: 18px; }
             .products h2, .testimonials h2, .contact h2 { font-size: 30px; }
-            .navbar-mobile .logo { left: 20px; transform: none; }
+            .navbar-mobile .logo { width: 150px; left: 50%; transform: translateX(-50%); bottom: -80px; top: auto; }
+            .navbar-mobile, .navbar-mobile .logo-container { overflow: visible; }
             .slider-content { padding: 0 20px; }
             .slider-capsules { bottom: 15%; }
             .capsule { width: 30px; height: 15px; }
@@ -917,21 +1292,29 @@
             .cascade-item.item-5 { right: 200px; bottom: 70px; }
             .cascade-item:hover { transform: scale(1.1) !important; }
             .about-btn { width: 100px; height: 100px; font-size: 14px; margin: 30px auto; }
+            .products { padding: 60px 0; }
+            .product-grid { padding: 0 20px; }
+            .testimonials { padding: 60px 0; }
+            .testimonial-grid { padding: 0 20px; }
+            .about { padding: 60px 0; }
+            .about-container { grid-template-columns: 1fr; padding: 0 20px; }
+            .contact { padding: 60px 0; }
+            .contact-container { grid-template-columns: 1fr; padding: 0 20px; }
+            .contact-text, .contact-form { padding: 10px; }
         }
 
         @media (min-width: 768px) and (max-width: 1200px) {
             .sidebar { width: 50%; }
             .sidebar .logo { width: 200px; }
-            .navbar-mobile .logo { width: 150px; left: 50%; transform: translateX(-50%); bottom: -80px; top: auto; }
-            .navbar-mobile, .navbar-mobile .logo-container { overflow: visible; }
         }
 
         @media (max-width: 767px) {
-            .navbar-mobile .logo { width: 120px; left: 20px; transform: none; bottom: -65px; }
+            .navbar-mobile .logo { width: 120px; left: 15px; transform: none; bottom: -65px; }
             .hero-wrapper { margin-top: 0; }
             .slider-item h1 { font-size: 36px; }
             .slider-item p { font-size: 16px; }
-            .products, .testimonials, .about, .contact { padding: 60px 20px; }
+            .products, .testimonials, .about, .contact { padding: 60px 0; }
+            .product-grid, .testimonial-grid, .about-container { padding: 0 20px; }
             .slider-item a { padding: 12px 30px; }
             .capsule { width: 25px; height: 12px; }
             .about { min-height: auto; padding: 30px 20px 50px; }
@@ -982,6 +1365,16 @@
                 width: 0; 
             }
             .about-btn { width: 90px; height: 90px; font-size: 13px; margin: 20px auto; }
+            .contact-form .form-row { grid-template-columns: 1fr; }
+            .contact-form .code-phone-group { grid-template-columns: 1fr; }
+            .email-link {
+                padding: 2px 4px;
+                font-size: 14px;
+            }
+            .email-option-btn {
+                font-size: 14px;
+                padding: 10px;
+            }
         }
 
         @media (max-width: 400px) {
@@ -1145,15 +1538,66 @@
         </div>
     </section>
 
+    <!-- New About Section -->
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-text">
+                <h2>Our Commitment to Excellence</h2>
+                <p>At Krivik Tissue Exports, we craft premium tissue products with a passion for quality and sustainability. Our mission is to deliver softness and reliability to customers worldwide while prioritizing eco-friendly practices.</p>
+                <ul>
+                    <li>Global leader in tissue manufacturing</li>
+                    <li>Committed to sustainable sourcing</li>
+                    <li>Unmatched customer support</li>
+                </ul>
+                <a href="#contact">Get in Touch</a>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6" alt="Tissue Excellence">
+                <div class="about-image-text">Softness Meets Sustainability</div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="contact" id="contact">
-        <h2>Get in Touch</h2>
-        <form>
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" rows="5" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
+        <div class="contact-container">
+            <div class="contact-text">
+                <h2>Connect With Us</h2>
+                <p>Reach out to Krivik Tissue Exports for premium tissue solutions tailored to your needs. Whether you're interested in partnerships, bulk orders, or product samples, our team is here to assist you with unparalleled service.</p>
+                <ul>
+                    <li>Swift response within 24 hours</li>
+                    <li>Global shipping and support</li>
+                    <li>Customized solutions for your business</li>
+                </ul>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm" action="mailto:krivikgroup@gmail.com" method="get" enctype="text/plain">
+                    <div class="form-row">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="code-phone-group">
+                            <input type="text" name="code" placeholder="Code (e.g., +1)" class="code-input" required>
+                            <input type="tel" name="phone" placeholder="Phone Number" class="phone-input" required>
+                        </div>
+                        <select name="subject" required>
+                            <option value="" disabled selected>Select Subject</option>
+                            <option value="dealership">For Dealership</option>
+                            <option value="purchase">For Purchase</option>
+                            <option value="sample">For Product Sample</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row full-width">
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-row full-width">
+                        <button type="submit"><span>Send Message</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
 
     <!-- Updated Footer -->
@@ -1173,11 +1617,32 @@
         </div>
         <div class="footer-section">
             <h3>Contact Details</h3>
-            <p>Email: info@krivikgroup.com</p>
-            <p>Phone: +1 123-456-7890</p>
-            <p>Address: 123 Tissue Lane, Export City</p>
+            <p>Email: <span class="email-link" data-bs-toggle="modal" data-bs-target="#emailModal">krivikgroup@gmail.com</span></p>
+            <p>Phone: <a href="tel:+918087134099" class="phone-highlight">+91 8087134099</a></p>
+            <p>Address: 1st floor, Dulari Complex, Godhani road, Nagpur, Maharashtra, India</p>
         </div>
     </footer>
+
+    <!-- Email Popup Modal -->
+    <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Contact Us via Email</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Select an option to contact <strong>krivikgroup@gmail.com</strong>:</p>
+                    <button class="btn email-option-btn" onclick="copyEmail()">Copy Email</button>
+                    <button class="btn email-option-btn" onclick="openGmail()">Open Gmail</button>
+                    <button class="btn email-option-btn" onclick="openDefaultEmail()">Other</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Sidebar Toggle
@@ -1261,6 +1726,27 @@
             overlay.classList.remove("active");
             document.body.style.overflow = "auto";
         });
+
+        // Email Popup Actions
+        function copyEmail() {
+            navigator.clipboard.writeText('krivikgroup@gmail.com').then(() => {
+                alert('Email copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy email: ', err);
+                alert('Failed to copy email. Please try again.');
+            });
+            bootstrap.Modal.getInstance(document.getElementById('emailModal')).hide();
+        }
+
+        function openGmail() {
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=krivikgroup@gmail.com&su=Inquiry%20from%20Krivik%20Website', '_blank');
+            bootstrap.Modal.getInstance(document.getElementById('emailModal')).hide();
+        }
+
+        function openDefaultEmail() {
+            window.location.href = 'mailto:krivikgroup@gmail.com?subject=Inquiry%20from%20Krivik%20Website';
+            bootstrap.Modal.getInstance(document.getElementById('emailModal')).hide();
+        }
     </script>
 </body>
 </html>
